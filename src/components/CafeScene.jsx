@@ -18,22 +18,22 @@ export const MONITOR = { x: c(83), y: c(74), w: c(34), h: c(26) }
 export const SCREEN = { x: c(86), y: c(77), w: c(28), h: c(16) }
 
 const PAL = {
-  k: '#5a3d4a', // outline
-  w: '#fffaf3',
-  c: '#fbe9d4',
-  p: '#f9b8c6',
-  P: '#ec8aa3',
-  r: '#ff8fab',
-  y: '#ffe39a',
-  m: '#bfe8d4',
-  M: '#86cfae',
-  o: '#ffc49b',
-  l: '#e8c4a0',
-  L: '#c99a74',
-  v: '#d6c8f5',
-  s: '#c6e6f7',
-  g: '#f7c58f',
-  G: '#5d6f68',
+  k: '#4b3832', // outline
+  w: '#fffdf7',
+  c: '#f5e6ca',
+  p: '#ffe8d6',
+  P: '#b2774c',
+  r: '#e3a47a', // blush
+  y: '#ffd6a5',
+  m: '#b7b7a4',
+  M: '#798468',
+  o: '#dcc7aa',
+  l: '#b2774c',
+  L: '#6f4e37',
+  v: '#dcc7aa',
+  s: '#b7b7a4',
+  g: '#ffd6a5',
+  G: '#6b705c',
 }
 
 const ART = {
@@ -203,7 +203,7 @@ function Hotspot({ label, onActivate, disabled, children }) {
   )
 }
 
-const FRAME_COLORS = [PAL.l, PAL.p, PAL.m, PAL.v]
+const FRAME_COLORS = [PAL.L, PAL.l, PAL.M, PAL.o]
 
 function Frame({ box, study, index, onSelect, disabled }) {
   const x = box.x / P
@@ -232,12 +232,12 @@ function Computer({ onSelect, disabled }) {
   return (
     <Hotspot label="Look at the computer: resume and engineering projects" onActivate={() => onSelect('computer')} disabled={disabled}>
       <g className="lift">
-        <Box x={93} y={95} w={14} h={3} fill={PAL.p} outline />
-        <Box x={89} y={97} w={22} h={3} fill={PAL.p} outline />
-        <Box x={83} y={74} w={34} h={22} fill={PAL.p} outline />
+        <Box x={93} y={95} w={14} h={3} fill={PAL.c} outline />
+        <Box x={89} y={97} w={22} h={3} fill={PAL.c} outline />
+        <Box x={83} y={74} w={34} h={22} fill={PAL.c} outline />
         <Box x={85} y={76} w={30} h={18} fill={PAL.m} outline />
         {[0, 1, 2].map((i) => (
-          <Box key={i} x={87} y={78 + i * 4} w={3} h={3} fill={[PAL.w, PAL.y, PAL.v][i]} outline />
+          <Box key={i} x={87} y={78 + i * 4} w={3} h={3} fill={[PAL.w, PAL.y, PAL.p][i]} outline />
         ))}
         <Box x={95} y={79} w={17} h={11} fill={PAL.w} outline />
         <Box x={95} y={79} w={17} h={3} fill={PAL.P} outline />
@@ -264,35 +264,35 @@ export default function CafeScene({ caseStudies, onSelect, disabled }) {
     <>
       <defs>
         <pattern id="dots" width="48" height="48" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width={P} height={P} fill="#f8cfd3" />
-          <rect x="24" y="24" width={P} height={P} fill="#f8cfd3" />
+          <rect x="0" y="0" width={P} height={P} fill="#dcc7aa" />
+          <rect x="24" y="24" width={P} height={P} fill="#dcc7aa" />
         </pattern>
         <pattern id="checker" width="48" height="48" patternUnits="userSpaceOnUse">
-          <rect width="48" height="48" fill="#f6d9c8" />
-          <rect width="24" height="24" fill="#eab9a6" />
-          <rect x="24" y="24" width="24" height="24" fill="#eab9a6" />
+          <rect width="48" height="48" fill="#6f4e37" />
+          <rect width="24" height="24" fill="#7d5a42" />
+          <rect x="24" y="24" width="24" height="24" fill="#7d5a42" />
         </pattern>
       </defs>
 
       {/* Wall */}
-      <Box x={-200} y={-120} w={600} h={214} fill="#fde8e4" />
+      <Box x={-200} y={-120} w={600} h={214} fill="#f5e6ca" />
       <rect x={c(-200)} y={c(-120)} width={c(600)} height={c(214)} fill="url(#dots)" />
 
       {/* String lights */}
       {wire.map(({ x, y }) => <rect key={x} x={c(x)} y={c(y)} width={P} height={P} fill={PAL.k} />)}
       {bulbs.map(({ x, y }, i) => (
         <g key={x} className="twinkle" style={{ animationDelay: `${(i % 4) * 0.5}s` }}>
-          <Box x={x} y={y + 1} w={2} h={2} fill={[PAL.p, PAL.y, PAL.m, PAL.v][i % 4]} />
+          <Box x={x} y={y + 1} w={2} h={2} fill={[PAL.y, PAL.w, PAL.y, PAL.p][i % 4]} />
         </g>
       ))}
 
       {/* Window with curtains */}
       <g>
         <Box x={162} y={18} w={32} h={54} fill={PAL.w} outline />
-        <Box x={164} y={20} w={28} h={50} fill={PAL.v} outline />
+        <Box x={164} y={20} w={28} h={50} fill={PAL.c} outline />
         <Box x={165} y={30} w={26} h={10} fill={PAL.p} />
-        <Box x={165} y={40} w={26} h={12} fill={PAL.o} />
-        <Box x={165} y={52} w={26} h={17} fill={PAL.y} />
+        <Box x={165} y={40} w={26} h={12} fill={PAL.y} />
+        <Box x={165} y={52} w={26} h={17} fill={PAL.o} />
         <Sprite x={c(167)} y={c(24)} rows={CLOUD} />
         <Sprite x={c(180)} y={c(33)} rows={CLOUD} />
         <Sprite x={c(168)} y={c(55)} rows={SUN} />
@@ -320,7 +320,7 @@ export default function CafeScene({ caseStudies, onSelect, disabled }) {
 
       {/* Chalkboard menu */}
       <g>
-        <Box x={8} y={56} w={28} h={32} fill={PAL.p} outline />
+        <Box x={8} y={56} w={28} h={32} fill={PAL.l} outline />
         <Box x={10} y={58} w={24} h={28} fill={PAL.G} outline />
         <text x={c(22)} y={c(64)} textAnchor="middle" className="chalk chalk-title">MENU</text>
         <text x={c(12)} y={c(69)} className="chalk">latte</text><text x={c(32)} y={c(69)} textAnchor="end" className="chalk">4</text>
@@ -331,11 +331,11 @@ export default function CafeScene({ caseStudies, onSelect, disabled }) {
       </g>
 
       {/* Wainscoting */}
-      <Box x={-200} y={93} w={600} h={44} fill={PAL.m} />
-      <Box x={-200} y={93} w={600} h={3} fill={PAL.M} />
+      <Box x={-200} y={93} w={600} h={44} fill="#a5a58d" />
+      <Box x={-200} y={93} w={600} h={3} fill="#6b705c" />
       <Box x={-200} y={93} w={600} h={1} fill={PAL.k} />
       {panels.map((x) => (
-        <rect key={x} x={c(x + 2) + 3} y={c(98) + 3} width={c(16) - 6} height={c(35) - 6} fill="none" stroke={PAL.M} strokeWidth={P} />
+        <rect key={x} x={c(x + 2) + 3} y={c(98) + 3} width={c(16) - 6} height={c(35) - 6} fill="none" stroke="#6b705c" strokeWidth={P} />
       ))}
 
       {/* Floor */}
