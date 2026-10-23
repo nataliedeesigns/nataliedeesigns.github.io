@@ -21,13 +21,13 @@ export const profile = {
 }
 
 // The four framed pictures above the desk. Order = left to right.
-// `art` picks the picture painted inside the frame: 'mountains', 'cup', 'botanical' or 'abstract'.
+// `art` picks the pixel picture inside the frame: 'coffee', 'cat', 'strawberry' or 'cloud'.
 export const caseStudies = [
   {
     id: 'case-1',
     title: 'Case Study One',
     subtitle: 'Mobile app · Product design',
-    art: 'mountains',
+    art: 'coffee',
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'Lead UX/UI Designer'],
@@ -45,7 +45,7 @@ export const caseStudies = [
     id: 'case-2',
     title: 'Case Study Two',
     subtitle: 'Web platform · UX research',
-    art: 'cup',
+    art: 'cat',
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'UX Designer'],
@@ -61,7 +61,7 @@ export const caseStudies = [
     id: 'case-3',
     title: 'Case Study Three',
     subtitle: 'Design system',
-    art: 'botanical',
+    art: 'strawberry',
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'UI Designer'],
@@ -77,7 +77,7 @@ export const caseStudies = [
     id: 'case-4',
     title: 'Case Study Four',
     subtitle: 'Responsive website · Branding',
-    art: 'abstract',
+    art: 'cloud',
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'UX/UI Designer'],

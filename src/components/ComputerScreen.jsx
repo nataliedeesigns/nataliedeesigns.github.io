@@ -3,22 +3,24 @@ import { profile, resume, engineeringProjects } from '../data'
 
 const ICONS = {
   resume: (
-    <svg viewBox="0 0 40 40">
-      <path d="M9 4h16l7 7v25H9z" fill="#f4ecdd" />
-      <path d="M25 4v7h7" fill="#d9c7a8" />
-      <path d="M14 18h13M14 23h13M14 28h9" stroke="#b9653f" strokeWidth="2" />
+    <svg viewBox="0 0 16 16">
+      <path d="M3 1h7v1h1v1h1v1h1v11H3z" fill="#5a3d4a" />
+      <path d="M4 2h6v3h2v9H4z" fill="#fffaf3" />
+      <path d="M5 6h6v1H5zM5 8h6v1H5zM5 10h4v1H5z" fill="#ec8aa3" />
     </svg>
   ),
   projects: (
-    <svg viewBox="0 0 40 40">
-      <path d="M4 10h12l3 4h17v20H4z" fill="#d4a24c" />
-      <path d="M4 16h32v18H4z" fill="#e6b85e" />
+    <svg viewBox="0 0 16 16">
+      <path d="M1 3h6v1h8v10H1z" fill="#5a3d4a" />
+      <path d="M2 4h4v1h8v8H2z" fill="#ffe39a" />
+      <path d="M2 6h12v1H2z" fill="#f2c96b" />
     </svg>
   ),
   contact: (
-    <svg viewBox="0 0 40 40">
-      <rect x="5" y="10" width="30" height="21" rx="2" fill="#f4ecdd" />
-      <path d="M5 11l15 11 15-11" stroke="#7d8a62" strokeWidth="2" fill="none" />
+    <svg viewBox="0 0 16 16">
+      <path d="M1 3h14v10H1z" fill="#5a3d4a" />
+      <path d="M2 4h12v8H2z" fill="#f9b8c6" />
+      <path d="M3 5h2v1h1v1h4V6h1V5h2v1h-1v1h-1v1H6V7H5V6H3z" fill="#5a3d4a" />
     </svg>
   ),
 }

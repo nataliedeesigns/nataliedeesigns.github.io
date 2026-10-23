@@ -27,7 +27,7 @@ function targetFor(focus, caseStudies) {
   if (!f) return null
   return {
     camera: { x: f.x - 18, y: f.y - 18, w: f.w + 36, h: f.h + 36 },
-    panel: { x: f.x + 10, y: f.y + 10, w: f.w - 20, h: f.h - 20 },
+    panel: { x: f.x + 18, y: f.y + 18, w: f.w - 36, h: f.h - 36 },
   }
 }
 
@@ -125,6 +125,7 @@ export default function Scene({ caseStudies, focus, onFocus }) {
         className="scene-svg"
         viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         preserveAspectRatio="none"
+        shapeRendering="crispEdges"
         role="img"
         aria-label="A cozy coffee shop with four framed case studies above a desk and a computer"
       >
