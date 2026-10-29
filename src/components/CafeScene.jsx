@@ -219,7 +219,6 @@ function Frame({ box, study, index, onSelect, disabled }) {
         <Box x={x} y={y} w={w} h={h} fill={FRAME_COLORS[index % 4]} outline />
         <Box x={x + 3} y={y + 3} w={w - 6} h={h - 6} fill={art.bg} outline />
         <Sprite x={c(x + Math.floor((w - 12) / 2))} y={c(y + Math.floor((h - 12) / 2))} rows={art.rows} />
-        <Sprite x={c(x + Math.floor(w / 2) - 3)} y={c(y - 3)} rows={BOW} />
         <rect className="ring" x={c(x) - 6} y={c(y - 3) - 6} width={c(w) + 12} height={c(h + 3) + 12} />
       </g>
       <Box x={x + Math.floor((w - plaqueW) / 2)} y={y + h + 1} w={plaqueW} h={4} fill={PAL.w} outline />
@@ -318,17 +317,7 @@ export default function CafeScene({ caseStudies, onSelect, disabled }) {
         ))}
       </g>
 
-      {/* Chalkboard menu */}
-      <g>
-        <Box x={8} y={56} w={28} h={32} fill={PAL.l} outline />
-        <Box x={10} y={58} w={24} h={28} fill={PAL.G} outline />
-        <text x={c(22)} y={c(64)} textAnchor="middle" className="chalk chalk-title">MENU</text>
-        <text x={c(12)} y={c(69)} className="chalk">latte</text><text x={c(32)} y={c(69)} textAnchor="end" className="chalk">4</text>
-        <text x={c(12)} y={c(73)} className="chalk">matcha</text><text x={c(32)} y={c(73)} textAnchor="end" className="chalk">5</text>
-        <text x={c(12)} y={c(77)} className="chalk">mochi</text><text x={c(32)} y={c(77)} textAnchor="end" className="chalk">3</text>
-        <text x={c(12)} y={c(82)} className="chalk">case studies</text>
-        <text x={c(32)} y={c(85)} textAnchor="end" className="chalk">free ♡</text>
-      </g>
+
 
       {/* Wainscoting */}
       <Box x={-200} y={93} w={600} h={44} fill="#a5a58d" />

@@ -15,6 +15,7 @@
   --line: #dcc7aa;
   --pixel: 'Pixelify Sans', monospace;
   --round: 'Nunito', system-ui, sans-serif;
+  --normal: 'Georgia';
   --sidebar: clamp(300px, 30vw, 400px);
   /* A chunky stepped outline that looks drawn on the pixel grid. */
   --px: 4px;
@@ -31,13 +32,13 @@ body {
   margin: 0;
   background: var(--cream);
   color: var(--ink);
-  font-family: var(--round);
+  font-family: var(--normal);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 a { color: var(--accent); }
 button { font: inherit; color: inherit; }
-h1, h2, h3, h4 { font-family: var(--pixel); font-weight: 600; color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--normal); font-weight: 600; color: var(--ink); }
 :focus-visible { outline: 3px solid var(--caramel); outline-offset: 2px; }
 
 /* ---------- Layout ---------- */
