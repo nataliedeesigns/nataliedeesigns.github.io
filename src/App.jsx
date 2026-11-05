@@ -80,12 +80,13 @@ function Home({ returnFrom }) {
             onFocus={goTo}
             onArrive={onBoardArrive}
           >
-            {(aspect, disabled) => (
+            {(aspect, disabled, scale) => (
               <Corkboard
                 caseStudies={caseStudies}
                 layout={boardLayout(caseStudies.length, aspect)}
                 onSelect={goTo}
                 disabled={disabled}
+                minText={12 / scale}
               />
             )}
           </ZoomScene>
