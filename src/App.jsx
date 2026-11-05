@@ -23,8 +23,9 @@ function corkboardLayout(aspect) {
 
 function deskLayout(aspect) {
   return {
-    // Wide screens see the whole desk area; narrow ones crop in on the desk.
-    home: aspect >= 0.9 ? { x: 30, y: 170, w: 1140, h: 690 } : { x: 270, y: 300, w: 660, h: 560 },
+    // The desk is framed at the same scale as the corkboard (1248 units across on wide
+    // screens, 768 on narrow ones), so a pixel is the same size in both sections.
+    home: aspect >= 0.9 ? { x: -24, y: 285, w: 1248, h: 600 } : { x: 216, y: 300, w: 768, h: 560 },
     targets: {
       computer: {
         camera: { x: MONITOR.x - 16, y: MONITOR.y - 16, w: MONITOR.w + 32, h: MONITOR.h + 24 },
