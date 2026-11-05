@@ -162,5 +162,13 @@ export const resume = {
     },
   ],
   education: [{ school: 'School Name', detail: 'Degree or certificate', dates: 'Year' }],
-  skills: ['User research', 'Wireframing', 'Prototyping', 'Design systems', 'Figma', 'React', 'CSS'],
+  skills: [
+    'User research',
+    'Wireframing',
+    'Prototyping',
+    'Design systems',
+    'Figma',
+    'React',
+    'CSS',
+  ],
 }

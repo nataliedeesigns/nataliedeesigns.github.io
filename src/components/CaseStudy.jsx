@@ -1,12 +1,7 @@
 // The case study page that opens when a note on the corkboard is clicked.
 // Its content comes from `caseStudies` in src/data.js.
 
-const slug = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-
-// The headings shown in the sidebar while reading a case study.
-export function caseOutline(study) {
-  return [{ id: 'overview', label: 'Overview' }, ...study.sections.map((s) => ({ id: slug(s.heading), label: s.heading }))]
-}
+import { slug } from './caseOutline'
 
 function Placeholder({ label, hint, className = '' }) {
   return (
@@ -23,18 +18,35 @@ function Prototype({ study }) {
     <figure className="prototype">
       <div className={`device device-${device}`}>
         {device === 'desktop' && (
-          <div className="browser-bar" aria-hidden="true"><span /><span /><span /></div>
+          <div className="browser-bar" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
         )}
         <div className="device-screen">
           {video ? (
-            <video src={video} poster={poster ?? undefined} autoPlay muted loop playsInline controls />
+            <video
+              src={video}
+              poster={poster ?? undefined}
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+            />
           ) : (
-            <Placeholder label="Prototype video" hint={`Add prototype.video in data.js (public/case-studies/${study.id}/)`} />
+            <Placeholder
+              label="Prototype video"
+              hint={`Add prototype.video in data.js (public/case-studies/${study.id}/)`}
+            />
           )}
         </div>
       </div>
       {link && (
-        <a className="pill-button" href={link} target="_blank" rel="noreferrer">Try the interactive prototype ↗</a>
+        <a className="pill-button" href={link} target="_blank" rel="noreferrer">
+          Try the interactive prototype ↗
+        </a>
       )}
     </figure>
   )
@@ -43,7 +55,9 @@ function Prototype({ study }) {
 function Media({ item }) {
   let content
   if (item.video) {
-    content = <video src={item.video} poster={item.poster ?? undefined} controls muted playsInline loop />
+    content = (
+      <video src={item.video} poster={item.poster ?? undefined} controls muted playsInline loop />
+    )
   } else if (item.src) {
     content = <img src={item.src} alt={item.alt ?? ''} loading="lazy" />
   } else {
@@ -83,18 +97,28 @@ export default function CaseStudy({ study, next }) {
       {study.sections.map((s) => (
         <section key={s.heading} className="cs-section" id={slug(s.heading)}>
           <h3>{s.heading}</h3>
-          {paragraphs(s.body).map((p) => <p key={p}>{p}</p>)}
+          {paragraphs(s.body).map((p) => (
+            <p key={p}>{p}</p>
+          ))}
           {s.media?.length > 0 && (
             <div className="cs-media-grid">
-              {s.media.map((m, i) => <Media key={i} item={m} />)}
+              {s.media.map((m, i) => (
+                <Media key={i} item={m} />
+              ))}
             </div>
           )}
         </section>
       ))}
 
       <nav className="cs-footer" aria-label="More case studies">
-        <a className="pill-button" href="#/">← All case studies</a>
-        {next && <a className="next-study" href={`#/work/${next.id}`}>Next: {next.title} →</a>}
+        <a className="pill-button" href="#/">
+          ← All case studies
+        </a>
+        {next && (
+          <a className="next-study" href={`#/work/${next.id}`}>
+            Next: {next.title} →
+          </a>
+        )}
       </nav>
     </article>
   )

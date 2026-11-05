@@ -39,27 +39,41 @@ function Resume() {
           <h3>{profile.name}</h3>
           <p>{profile.role}</p>
         </div>
-        <a className="pill-button" href={profile.resumePdf} target="_blank" rel="noreferrer">Download PDF</a>
+        <a className="pill-button" href={profile.resumePdf} target="_blank" rel="noreferrer">
+          Download PDF
+        </a>
       </div>
       <h4>Experience</h4>
       {resume.experience.map((job) => (
         <div className="resume-item" key={job.role + job.company}>
           <div className="resume-row">
-            <strong>{job.role} · {job.company}</strong>
+            <strong>
+              {job.role} · {job.company}
+            </strong>
             <span>{job.dates}</span>
           </div>
-          <ul>{job.points.map((p) => <li key={p}>{p}</li>)}</ul>
+          <ul>
+            {job.points.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
         </div>
       ))}
       <h4>Education</h4>
       {resume.education.map((e) => (
         <div className="resume-row" key={e.school}>
-          <strong>{e.school} · {e.detail}</strong>
+          <strong>
+            {e.school} · {e.detail}
+          </strong>
           <span>{e.dates}</span>
         </div>
       ))}
       <h4>Skills</h4>
-      <ul className="tags">{resume.skills.map((s) => <li key={s}>{s}</li>)}</ul>
+      <ul className="tags">
+        {resume.skills.map((s) => (
+          <li key={s}>{s}</li>
+        ))}
+      </ul>
     </div>
   )
 }
@@ -72,7 +86,11 @@ function Projects() {
         <a className="project" key={p.title} href={p.link} target="_blank" rel="noreferrer">
           <strong>{p.title}</strong>
           <span>{p.description}</span>
-          <ul className="tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
+          <ul className="tags">
+            {p.tags.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </a>
       ))}
     </div>
@@ -83,8 +101,18 @@ function Contact() {
   return (
     <div className="contact">
       <p className="window-intro">Let's grab a coffee (virtually or otherwise).</p>
-      <a className="pill-button" href={`mailto:${profile.email}`}>{profile.email}</a>
-      <p><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a> · <a href={profile.github} target="_blank" rel="noreferrer">GitHub</a></p>
+      <a className="pill-button" href={`mailto:${profile.email}`}>
+        {profile.email}
+      </a>
+      <p>
+        <a href={profile.linkedin} target="_blank" rel="noreferrer">
+          LinkedIn
+        </a>{' '}
+        ·{' '}
+        <a href={profile.github} target="_blank" rel="noreferrer">
+          GitHub
+        </a>
+      </p>
     </div>
   )
 }
@@ -112,7 +140,9 @@ export default function ComputerScreen() {
       <div className="icons">
         {APPS.map((a) => (
           <button key={a.id} className="icon" onClick={() => setOpen(a.id)}>
-            <span className="icon-glyph" aria-hidden="true">{ICONS[a.id]}</span>
+            <span className="icon-glyph" aria-hidden="true">
+              {ICONS[a.id]}
+            </span>
             <span>{a.label}</span>
           </button>
         ))}
@@ -124,7 +154,9 @@ export default function ComputerScreen() {
             <button className="dot" aria-label="Close window" onClick={() => setOpen(null)} />
             <span>{app.label}</span>
           </div>
-          <div className="window-body"><View /></div>
+          <div className="window-body">
+            <View />
+          </div>
         </div>
       )}
     </div>

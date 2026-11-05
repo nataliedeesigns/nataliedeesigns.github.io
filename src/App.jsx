@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Sidebar, { CaseSidebar } from './components/Sidebar'
 import ZoomScene from './components/ZoomScene'
-import Corkboard, { boardLayout } from './components/Corkboard'
-import CafeScene, { MONITOR, SCREEN } from './components/CafeScene'
-import CaseStudy, { caseOutline } from './components/CaseStudy'
+import Corkboard from './components/Corkboard'
+import { boardLayout } from './components/boardLayout'
+import CafeScene from './components/CafeScene'
+import { MONITOR, SCREEN } from './components/pixel'
+import CaseStudy from './components/CaseStudy'
+import { caseOutline } from './components/caseOutline'
 import ComputerScreen from './components/ComputerScreen'
 import { navigate, useRoute } from './router'
 import { profile, caseStudies } from './data'
@@ -23,7 +26,10 @@ function deskLayout(aspect) {
     // Wide screens see the whole desk area; narrow ones crop in on the desk.
     home: aspect >= 0.9 ? { x: 30, y: 170, w: 1140, h: 690 } : { x: 270, y: 300, w: 660, h: 560 },
     targets: {
-      computer: { camera: { x: MONITOR.x - 16, y: MONITOR.y - 16, w: MONITOR.w + 32, h: MONITOR.h + 24 }, panel: SCREEN },
+      computer: {
+        camera: { x: MONITOR.x - 16, y: MONITOR.y - 16, w: MONITOR.w + 32, h: MONITOR.h + 24 },
+        panel: SCREEN,
+      },
     },
   }
 }
@@ -47,11 +53,14 @@ function Home({ returnFrom }) {
   }, [])
 
   // Once the camera reaches a note: open its page, or zoom out if we just came back from it.
-  const onBoardArrive = useCallback((id) => {
-    if (!id) return
-    if (id === opening.current) navigate(`/work/${id}`)
-    else if (id === returnFrom) setTimeout(() => setFocus(null), 150)
-  }, [returnFrom])
+  const onBoardArrive = useCallback(
+    (id) => {
+      if (!id) return
+      if (id === opening.current) navigate(`/work/${id}`)
+      else if (id === returnFrom) setTimeout(() => setFocus(null), 150)
+    },
+    [returnFrom],
+  )
 
   // On phones the page itself scrolls, so hold it still while zoomed in.
   useEffect(() => {
@@ -81,7 +90,10 @@ function Home({ returnFrom }) {
             )}
           </ZoomScene>
           {!focus && (
-            <button className="scroll-cue" onClick={() => deskRef.current.scrollIntoView({ behavior: 'smooth' })}>
+            <button
+              className="scroll-cue"
+              onClick={() => deskRef.current.scrollIntoView({ behavior: 'smooth' })}
+            >
               ↓ Scroll down to my desk
             </button>
           )}
@@ -122,7 +134,8 @@ function CasePage({ study }) {
       }
       // The last sections may be too short to reach the top, so the bottom of the page counts as the end.
       const scroller = e.target === document ? document.scrollingElement : e.target
-      if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 4) current = outline.at(-1).id
+      if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 4)
+        current = outline.at(-1).id
       setActive(current)
     }
     document.addEventListener('scroll', onScroll, true)
@@ -133,7 +146,9 @@ function CasePage({ study }) {
   useEffect(() => {
     document.title = `${study.title} — ${profile.name}`
     window.scrollTo(0, 0)
-    return () => { document.title = `${profile.name} — ${profile.role}` }
+    return () => {
+      document.title = `${profile.name} — ${profile.role}`
+    }
   }, [study])
 
   const jump = (id) => {
@@ -143,7 +158,13 @@ function CasePage({ study }) {
 
   return (
     <div className="layout">
-      <CaseSidebar profile={profile} study={study} outline={outline} active={active} onJump={jump} />
+      <CaseSidebar
+        profile={profile}
+        study={study}
+        outline={outline}
+        active={active}
+        onJump={jump}
+      />
       <main className="stage case-stage">
         <CaseStudy study={study} next={next} />
       </main>
@@ -155,6 +176,7 @@ export default function App() {
   const { route, from } = useRoute()
   const study = route.page === 'work' && caseStudies.find((s) => s.id === route.id)
   if (study) return <CasePage key={study.id} study={study} />
-  const returnFrom = from?.page === 'work' && caseStudies.some((s) => s.id === from.id) ? from.id : null
+  const returnFrom =
+    from?.page === 'work' && caseStudies.some((s) => s.id === from.id) ? from.id : null
   return <Home key={returnFrom ?? 'home'} returnFrom={returnFrom} />
 }
