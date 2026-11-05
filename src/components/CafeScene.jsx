@@ -100,13 +100,16 @@ export function Box({ x, y, w, h, fill, outline }) {
   )
 }
 
-export function Hotspot({ label, onActivate, disabled, children }) {
+// A clickable part of a scene. Without a `label`, its accessible name comes from its text.
+// `id` lets focus be returned to it after zooming back out.
+export function Hotspot({ id, label, onActivate, disabled, children }) {
   return (
     <g
       className="hotspot"
       role="button"
       tabIndex={disabled ? -1 : 0}
       aria-label={label}
+      data-hotspot={id}
       onClick={disabled ? undefined : onActivate}
       onKeyDown={(e) => {
         if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
@@ -123,6 +126,7 @@ export function Hotspot({ label, onActivate, disabled, children }) {
 function Computer({ onSelect, disabled }) {
   return (
     <Hotspot
+      id="computer"
       label="Look at the computer: resume and engineering projects"
       onActivate={() => onSelect('computer')}
       disabled={disabled}
@@ -273,7 +277,7 @@ export default function CafeScene({ onSelect, disabled }) {
         <Box x={119} y={88} w={15} h={4} fill={PAL.P} outline />
       </g>
       <Sprite x={c(138)} y={c(92)} rows={CAT} />
-      <text x={c(146)} y={c(89)} className="zzz">
+      <text x={c(146)} y={c(89)} className="zzz" aria-hidden="true">
         z z
       </text>
     </>

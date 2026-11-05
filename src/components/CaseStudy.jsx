@@ -2,6 +2,7 @@
 // Its content comes from `caseStudies` in src/data.js.
 
 import { slug } from './caseOutline'
+import { prefersReducedMotion } from '../motion'
 
 function Placeholder({ label, hint, className = '' }) {
   return (
@@ -29,7 +30,7 @@ function Prototype({ study }) {
             <video
               src={video}
               poster={poster ?? undefined}
-              autoPlay
+              autoPlay={!prefersReducedMotion()}
               muted
               loop
               playsInline
@@ -45,7 +46,7 @@ function Prototype({ study }) {
       </div>
       {link && (
         <a className="pill-button" href={link} target="_blank" rel="noreferrer">
-          Try the interactive prototype ↗
+          Try the interactive prototype ↗<span className="sr-only"> (opens in a new tab)</span>
         </a>
       )}
     </figure>
@@ -78,7 +79,7 @@ export default function CaseStudy({ study, next }) {
       <header className="cs-hero" id="overview">
         <div className="cs-intro">
           <p className="eyebrow">{study.subtitle}</p>
-          <h1>{study.title}</h1>
+          <h1 tabIndex={-1}>{study.title}</h1>
           <p className="case-summary">{study.summary}</p>
           <dl className="case-meta">
             {study.meta.map(([label, value]) => (
@@ -96,7 +97,7 @@ export default function CaseStudy({ study, next }) {
 
       {study.sections.map((s) => (
         <section key={s.heading} className="cs-section" id={slug(s.heading)}>
-          <h3>{s.heading}</h3>
+          <h2>{s.heading}</h2>
           {paragraphs(s.body).map((p) => (
             <p key={p}>{p}</p>
           ))}
@@ -112,11 +113,11 @@ export default function CaseStudy({ study, next }) {
 
       <nav className="cs-footer" aria-label="More case studies">
         <a className="pill-button" href="#/">
-          ← All case studies
+          <span aria-hidden="true">←</span> All case studies
         </a>
         {next && (
           <a className="next-study" href={`#/work/${next.id}`}>
-            Next: {next.title} →
+            Next: {next.title} <span aria-hidden="true">→</span>
           </a>
         )}
       </nav>

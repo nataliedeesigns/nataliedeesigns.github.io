@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { profile, resume, engineeringProjects } from '../data'
 
 const ICONS = {
@@ -41,6 +41,7 @@ function Resume() {
         </div>
         <a className="pill-button" href={profile.resumePdf} target="_blank" rel="noreferrer">
           Download PDF
+          <span className="sr-only"> (opens in a new tab)</span>
         </a>
       </div>
       <h4>Experience</h4>
@@ -91,6 +92,7 @@ function Projects() {
               <li key={t}>{t}</li>
             ))}
           </ul>
+          <span className="sr-only"> (opens in a new tab)</span>
         </a>
       ))}
     </div>
@@ -107,10 +109,12 @@ function Contact() {
       <p>
         <a href={profile.linkedin} target="_blank" rel="noreferrer">
           LinkedIn
+          <span className="sr-only"> (opens in a new tab)</span>
         </a>{' '}
         ·{' '}
         <a href={profile.github} target="_blank" rel="noreferrer">
           GitHub
+          <span className="sr-only"> (opens in a new tab)</span>
         </a>
       </p>
     </div>
@@ -122,6 +126,19 @@ const VIEWS = { resume: Resume, projects: Projects, contact: Contact }
 export default function ComputerScreen() {
   const [open, setOpen] = useState(null)
   const [time, setTime] = useState(() => new Date())
+  const windowRef = useRef(null)
+  const iconRefs = useRef({})
+
+  // Opening a window moves keyboard focus into it.
+  useEffect(() => {
+    if (open) windowRef.current?.focus()
+  }, [open])
+
+  // Closing one puts focus back on the icon that opened it.
+  const close = () => {
+    iconRefs.current[open]?.focus()
+    setOpen(null)
+  }
 
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 30000)
@@ -139,7 +156,12 @@ export default function ComputerScreen() {
       </div>
       <div className="icons">
         {APPS.map((a) => (
-          <button key={a.id} className="icon" onClick={() => setOpen(a.id)}>
+          <button
+            key={a.id}
+            ref={(el) => (iconRefs.current[a.id] = el)}
+            className="icon"
+            onClick={() => setOpen(a.id)}
+          >
             <span className="icon-glyph" aria-hidden="true">
               {ICONS[a.id]}
             </span>
@@ -149,9 +171,9 @@ export default function ComputerScreen() {
       </div>
       {!open && <p className="desktop-hint">Open Resume to see my experience</p>}
       {View && (
-        <div className="window" role="dialog" aria-label={app.label}>
+        <div className="window" role="dialog" aria-label={app.label} tabIndex={-1} ref={windowRef}>
           <div className="titlebar">
-            <button className="dot" aria-label="Close window" onClick={() => setOpen(null)} />
+            <button className="dot" aria-label={`Close ${app.label}`} onClick={close} />
             <span>{app.label}</span>
           </div>
           <div className="window-body">

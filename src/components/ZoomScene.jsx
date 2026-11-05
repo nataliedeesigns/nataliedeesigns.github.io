@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { prefersReducedMotion } from '../motion'
 
 const ZOOM_MS = 900
 
@@ -77,7 +78,7 @@ export default function ZoomScene({
   useEffect(() => {
     if (!size.w || !size.h) return
     const to = fit(target ? target.camera : home, aspect)
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduced = prefersReducedMotion()
     // Animate when the focus changes. A resize mid-flight finishes the flight in the time
     // left; otherwise resizes and the first paint jump straight there.
     const remaining = Math.max(0, flightEndRef.current - performance.now())
@@ -130,7 +131,7 @@ export default function ZoomScene({
         viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         preserveAspectRatio="none"
         shapeRendering="crispEdges"
-        role="img"
+        role="group"
         aria-label={label}
       >
         {children(aspect, Boolean(focus))}
@@ -140,7 +141,7 @@ export default function ZoomScene({
 
       {focus && renderPanel && (
         <button className="back-button" onClick={() => onFocus(null)} autoFocus>
-          ← Back
+          <span aria-hidden="true">←</span> Back
         </button>
       )}
 

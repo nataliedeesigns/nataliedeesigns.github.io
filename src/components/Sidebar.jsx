@@ -48,7 +48,9 @@ export default function Sidebar({ profile, caseStudies, onFocus, focus }) {
                 className={focus === 'computer' ? 'active' : ''}
                 onClick={() => onFocus('computer')}
               >
-                <span className="num">→</span>
+                <span className="num" aria-hidden="true">
+                  →
+                </span>
                 <span>
                   <span className="nav-title">Resume & engineering projects</span>
                   <span className="nav-sub">On the computer</span>
@@ -62,9 +64,11 @@ export default function Sidebar({ profile, caseStudies, onFocus, focus }) {
           <a href={`mailto:${profile.email}`}>Email</a>
           <a href={profile.linkedin} target="_blank" rel="noreferrer">
             LinkedIn
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
           <a href={profile.github} target="_blank" rel="noreferrer">
             GitHub
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
         <p className="made">Made with React and a lot of coffee.</p>
@@ -83,7 +87,7 @@ export function CaseSidebar({ profile, study, outline, active, onJump }) {
           <span className="nav-sub">{profile.role}</span>
         </a>
         <a className="back-link" href="#/">
-          ← All case studies
+          <span aria-hidden="true">←</span> All case studies
         </a>
 
         <p className="case-eyebrow">{study.subtitle}</p>
@@ -111,9 +115,11 @@ export function CaseSidebar({ profile, study, outline, active, onJump }) {
           <a href={`mailto:${profile.email}`}>Email</a>
           <a href={profile.linkedin} target="_blank" rel="noreferrer">
             LinkedIn
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
           <a href={profile.github} target="_blank" rel="noreferrer">
             GitHub
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
       </div>
