@@ -9,7 +9,29 @@ import CaseStudy from './components/CaseStudy'
 import { caseOutline } from './components/caseOutline'
 import ComputerScreen from './components/ComputerScreen'
 import { navigate, useRoute } from './router'
+import { scrollBehavior } from './motion'
 import { profile, caseStudies } from './data'
+
+// The first thing a keyboard user reaches. It moves focus in code because a plain
+// "#main" link would be read as a page address by the router.
+function SkipLink() {
+  return (
+    <a
+      className="skip-link"
+      href="#main"
+      onClick={(e) => {
+        e.preventDefault()
+        document.getElementById('main')?.focus()
+      }}
+    >
+      Skip to content
+    </a>
+  )
+}
+
+// Move keyboard focus to a scene's hotspot (a note or the computer).
+const focusHotspot = (id) =>
+  document.querySelector(`[data-hotspot="${id}"]`)?.focus({ preventScroll: true })
 
 const pad = (b, n) => ({ x: b.x - n, y: b.y - n, w: b.w + n * 2, h: b.h + n * 2 })
 
@@ -40,6 +62,10 @@ function deskLayout(aspect) {
 function Home({ returnFrom }) {
   const [focus, setFocus] = useState(returnFrom)
   const opening = useRef(null)
+  // What to put keyboard focus back on once the camera has zoomed out.
+  const returnFocus = useRef(returnFrom)
+  const focusRef = useRef(focus)
+  focusRef.current = focus
   const boardRef = useRef(null)
   const deskRef = useRef(null)
 
@@ -48,7 +74,9 @@ function Home({ returnFrom }) {
     opening.current = id
     if (id) {
       const section = (id === 'computer' ? deskRef : boardRef).current
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      section.scrollIntoView({ behavior: scrollBehavior(), block: 'start' })
+    } else {
+      returnFocus.current = focusRef.current
     }
     setFocus(id)
   }, [])
@@ -56,7 +84,12 @@ function Home({ returnFrom }) {
   // Once the camera reaches a note: open its page, or zoom out if we just came back from it.
   const onBoardArrive = useCallback(
     (id) => {
-      if (!id) return
+      if (!id) {
+        if (returnFocus.current && returnFocus.current !== 'computer')
+          focusHotspot(returnFocus.current)
+        returnFocus.current = null
+        return
+      }
       if (id === opening.current) navigate(`/work/${id}`)
       else if (id === returnFrom) setTimeout(() => setFocus(null), 150)
     },
@@ -71,9 +104,13 @@ function Home({ returnFrom }) {
 
   return (
     <div className="layout">
+      <SkipLink />
       <Sidebar profile={profile} caseStudies={caseStudies} focus={focus} onFocus={goTo} />
-      <main className={`stage ${focus ? 'is-locked' : ''}`}>
-        <section ref={boardRef} className="stage-section" aria-label="Case studies">
+      <main id="main" tabIndex={-1} className={`stage ${focus ? 'is-locked' : ''}`}>
+        <section ref={boardRef} className="stage-section" aria-labelledby="board-heading">
+          <h2 id="board-heading" className="sr-only">
+            Case studies
+          </h2>
           <ZoomScene
             label="A corkboard with case study notes pinned to it"
             layout={corkboardLayout}
@@ -94,19 +131,28 @@ function Home({ returnFrom }) {
           {!focus && (
             <button
               className="scroll-cue"
-              onClick={() => deskRef.current.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => deskRef.current.scrollIntoView({ behavior: scrollBehavior() })}
             >
               ↓ Scroll down to my desk
             </button>
           )}
         </section>
 
-        <section ref={deskRef} className="stage-section" aria-label="Resume and projects">
+        <section ref={deskRef} className="stage-section" aria-labelledby="desk-heading">
+          <h2 id="desk-heading" className="sr-only">
+            Resume and projects
+          </h2>
           <ZoomScene
             label="A cozy café desk with a computer on it"
             layout={deskLayout}
             focus={focus === 'computer' ? 'computer' : null}
             onFocus={goTo}
+            onArrive={(id) => {
+              if (!id && returnFocus.current === 'computer') {
+                focusHotspot('computer')
+                returnFocus.current = null
+              }
+            }}
             panelClass={() => 'panel-screen'}
             renderPanel={() => <ComputerScreen />}
             hint="Click the computer for my resume and projects"
@@ -120,7 +166,7 @@ function Home({ returnFrom }) {
 }
 
 // A case study page, with its headings in the sidebar.
-function CasePage({ study }) {
+function CasePage({ study, focusHeading }) {
   const outline = caseOutline(study)
   const [active, setActive] = useState(outline[0].id)
   const index = caseStudies.indexOf(study)
@@ -148,18 +194,21 @@ function CasePage({ study }) {
   useEffect(() => {
     document.title = `${study.title} — ${profile.name}`
     window.scrollTo(0, 0)
+    // Arriving from another page: start screen readers and keyboard focus at the title.
+    if (focusHeading) document.querySelector('.case-study h1')?.focus({ preventScroll: true })
     return () => {
       document.title = `${profile.name} — ${profile.role}`
     }
-  }, [study])
+  }, [study, focusHeading])
 
   const jump = (id) => {
     setActive(id)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    document.getElementById(id)?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' })
   }
 
   return (
     <div className="layout">
+      <SkipLink />
       <CaseSidebar
         profile={profile}
         study={study}
@@ -167,7 +216,7 @@ function CasePage({ study }) {
         active={active}
         onJump={jump}
       />
-      <main className="stage case-stage">
+      <main id="main" tabIndex={-1} className="stage case-stage">
         <CaseStudy study={study} next={next} />
       </main>
     </div>
@@ -177,7 +226,7 @@ function CasePage({ study }) {
 export default function App() {
   const { route, from } = useRoute()
   const study = route.page === 'work' && caseStudies.find((s) => s.id === route.id)
-  if (study) return <CasePage key={study.id} study={study} />
+  if (study) return <CasePage key={study.id} study={study} focusHeading={from !== null} />
   const returnFrom =
     from?.page === 'work' && caseStudies.some((s) => s.id === from.id) ? from.id : null
   return <Home key={returnFrom ?? 'home'} returnFrom={returnFrom} />

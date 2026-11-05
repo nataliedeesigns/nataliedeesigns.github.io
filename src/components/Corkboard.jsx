@@ -84,11 +84,7 @@ function Note({ study, box, index, onSelect, disabled, narrow, minText }) {
   const textY = y + pad + thumbH
   const cx = x + w / 2
   return (
-    <Hotspot
-      label={`Open case study: ${study.title}`}
-      onActivate={() => onSelect(study.id)}
-      disabled={disabled}
-    >
+    <Hotspot id={study.id} onActivate={() => onSelect(study.id)} disabled={disabled}>
       <g className="lift">
         <g transform={`rotate(${tilt} ${cx} ${y + h / 2})`} shapeRendering="geometricPrecision">
           <rect x={x + 8} y={y + 10} width={w} height={h} fill="#00000026" />
@@ -140,7 +136,7 @@ function Note({ study, box, index, onSelect, disabled, narrow, minText }) {
             className="note-cta"
             fontSize={cta}
           >
-            Read case study →
+            Read case study <tspan aria-hidden="true">→</tspan>
           </text>
           <rect className="ring" x={x - 10} y={y - 10} width={w + 20} height={h + 20} />
         </g>

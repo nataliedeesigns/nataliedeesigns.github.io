@@ -7,6 +7,12 @@ import { caseStudies } from '../data'
 import { caseOutline } from '../components/caseOutline'
 
 // Let the zoom camera's animation frames and any hash change run.
+// A note on the corkboard. Notes are named by their visible text, which starts with the title.
+const note = (title) =>
+  within(screen.getByRole('region', { name: 'Case studies' })).getByRole('button', {
+    name: new RegExp(`^${title}`),
+  })
+
 const settle = () => act(() => new Promise((resolve) => setTimeout(resolve, 50)))
 
 async function renderAt(hash) {
@@ -30,7 +36,7 @@ describe('every route renders', () => {
   it('renders the home page with a note for every case study', async () => {
     await renderAt('')
     for (const study of caseStudies) {
-      expect(screen.getByRole('button', { name: `Open case study: ${study.title}` })).toBeTruthy()
+      expect(note(study.title)).toBeTruthy()
     }
     expect(screen.getByRole('button', { name: /Look at the computer/ })).toBeTruthy()
   })
@@ -58,7 +64,7 @@ describe('case study links on the home page resolve', () => {
     'the "%s" note opens its page',
     async (title, study) => {
       await renderAt('')
-      fireEvent.click(screen.getByRole('button', { name: `Open case study: ${title}` }))
+      fireEvent.click(note(title))
       await settle()
       expect(window.location.hash).toBe(`#/work/${study.id}`)
       expect(await screen.findByRole('heading', { level: 1, name: title })).toBeTruthy()
