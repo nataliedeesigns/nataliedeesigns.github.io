@@ -33,6 +33,15 @@ export const profile = {
 //              link: a live prototype (e.g. a Figma prototype share link), shown as a button.
 //   sections   The story. `body` is a paragraph or a list of paragraphs.
 //              `media` is a list of images or videos: { src, alt, caption } or { video, poster, caption }.
+//
+// Images load fastest as WebP or AVIF, about 2x the size they're shown at (1600px wide is
+// plenty). Add `width` and `height` (the file's pixel size) so the page doesn't jump while
+// they load. For several sizes or formats, add `srcSet`, `sizes` and `sources`, e.g.
+//   { src: '/case-studies/case-1/final.webp', width: 1600, height: 1000,
+//     srcSet: '/case-studies/case-1/final-800.webp 800w, /case-studies/case-1/final.webp 1600w',
+//     sizes: '(max-width: 860px) 100vw, 760px',
+//     sources: [{ type: 'image/avif', srcSet: '/case-studies/case-1/final.avif' }] }
+// `cover` takes the same object form, or just a path.
 const placeholderSections = [
   {
     heading: 'The problem',

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { prefersReducedMotion } from '../motion'
 
 const ZOOM_MS = 900
@@ -17,7 +17,8 @@ const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 //
 // `layout(aspect)` returns { home, targets }: the box the camera rests on, and for each
 // focusable id a `camera` box plus a `panel` box (scene units) or 'full' for the whole view.
-// `children(aspect, disabled)` renders the SVG content. `onArrive(focus)` is called
+// `children(aspect, disabled, scale)` renders the SVG content; `scale` is screen pixels
+// per scene unit at the home view. `onArrive(focus)` is called
 // whenever the camera finishes moving; without `renderPanel` no panel is shown.
 export default function ZoomScene({
   label,
@@ -72,6 +73,13 @@ export default function ZoomScene({
 
   const aspect = size.w && size.h ? size.w / size.h : 4 / 3
   const { home, targets } = layout(aspect)
+  const disabled = Boolean(focus)
+  const scale = size.w ? size.w / fit(home, aspect).w : 1
+  // The scene only changes with these, so don't redraw it on every animation frame.
+  const content = useMemo(
+    () => children(aspect, disabled, scale),
+    [children, aspect, disabled, scale],
+  )
   const target = focus ? targets[focus] : null
 
   // Move the camera whenever the focus or the container size changes.
@@ -134,7 +142,7 @@ export default function ZoomScene({
         role="group"
         aria-label={label}
       >
-        {children(aspect, Boolean(focus))}
+        {content}
       </svg>
 
       {!focus && hint && <p className="scene-hint">{hint}</p>}

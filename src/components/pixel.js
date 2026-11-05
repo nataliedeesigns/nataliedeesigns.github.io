@@ -4,8 +4,8 @@
 export const P = 6
 export const c = (n) => n * P
 
-export const MONITOR = { x: c(83), y: c(74), w: c(34), h: c(26) }
-export const SCREEN = { x: c(86), y: c(77), w: c(28), h: c(16) }
+export const MONITOR = { x: c(74), y: c(61), w: c(52), h: c(39) }
+export const SCREEN = { x: c(77), y: c(64), w: c(46), h: c(25) }
 
 export const PAL = {
   k: '#4b3832', // outline

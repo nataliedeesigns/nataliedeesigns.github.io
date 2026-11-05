@@ -20,7 +20,7 @@ function Thumbnail({ study, x, y, w, h, clipId }) {
           <rect x={x} y={y} width={w} height={h} />
         </clipPath>
         <image
-          href={study.cover}
+          href={typeof study.cover === 'string' ? study.cover : study.cover.src}
           x={x}
           y={y}
           width={w}
@@ -45,12 +45,42 @@ function Thumbnail({ study, x, y, w, h, clipId }) {
   )
 }
 
-function Note({ study, box, index, onSelect, disabled, narrow }) {
+// Split text into at most `maxLines` lines of about `maxChars` characters.
+function wrap(text, maxChars, maxLines = 3) {
+  const lines = []
+  for (const word of text.split(' ')) {
+    const last = lines[lines.length - 1]
+    if (last !== undefined && (last + ' ' + word).length <= maxChars)
+      lines[lines.length - 1] += ' ' + word
+    else lines.push(word)
+  }
+  if (lines.length > maxLines)
+    lines.splice(
+      maxLines - 1,
+      Infinity,
+      lines
+        .slice(maxLines - 1)
+        .join(' ')
+        .slice(0, maxChars - 1) + '…',
+    )
+  return lines
+}
+
+function Note({ study, box, index, onSelect, disabled, narrow, minText }) {
   const { x, y, w, h, tilt } = box
   const pad = w * 0.05
-  const thumbH = h * (narrow ? 0.5 : 0.55)
   // Narrow boards are drawn smaller on screen, so their text is relatively larger.
-  const title = narrow ? w * 0.1 : Math.max(17, Math.min(28, w * 0.065))
+  // Text never renders smaller than `minText` (12px on screen), so on small screens it grows
+  // and long subtitles wrap.
+  const title = Math.max(narrow ? w * 0.1 : Math.max(17, Math.min(28, w * 0.065)), minText)
+  const sub = Math.max(title * 0.62, minText)
+  const cta = Math.max(title * 0.6, minText)
+  // Georgia averages just under half an em per character.
+  const subLines = wrap(study.subtitle, Math.floor((w - pad * 2) / (sub * 0.48)))
+  // When the subtitle wraps, the picture gives up enough height to fit the extra lines.
+  const baseThumbH = h * (narrow ? 0.5 : 0.55)
+  const textH = title * 2.45 + (subLines.length - 1) * sub * 1.2 + sub * 0.4 + cta * 1.2
+  const thumbH = subLines.length > 1 ? Math.min(baseThumbH, h - pad * 2 - textH) : baseThumbH
   const textY = y + pad + thumbH
   const cx = x + w / 2
   return (
@@ -91,16 +121,20 @@ function Note({ study, box, index, onSelect, disabled, narrow }) {
             x={x + pad}
             y={textY + title * 1.5 + title * 0.95}
             className="note-sub"
-            fontSize={title * 0.62}
+            fontSize={sub}
           >
-            {study.subtitle}
+            {subLines.map((line, i) => (
+              <tspan key={i} x={x + pad} dy={i ? sub * 1.2 : 0}>
+                {line}
+              </tspan>
+            ))}
           </text>
           <text
             x={x + w - pad}
             y={y + h - pad}
             textAnchor="end"
             className="note-cta"
-            fontSize={title * 0.6}
+            fontSize={cta}
           >
             Read case study <tspan aria-hidden="true">→</tspan>
           </text>
@@ -116,7 +150,7 @@ function Note({ study, box, index, onSelect, disabled, narrow }) {
   )
 }
 
-export default function Corkboard({ caseStudies, layout, onSelect, disabled }) {
+export default function Corkboard({ caseStudies, layout, onSelect, disabled, minText = 0 }) {
   const { board, notes, narrow } = layout
   const { w: W, h: H } = board
   return (
@@ -155,6 +189,7 @@ export default function Corkboard({ caseStudies, layout, onSelect, disabled }) {
           onSelect={onSelect}
           disabled={disabled}
           narrow={narrow}
+          minText={minText}
         />
       ))}
     </>
