@@ -25,7 +25,9 @@ async function violations() {
   return results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(', ')}`)
 }
 
-describe('accessibility (axe)', () => {
+// axe scans every element, and the café scenes have about 2,000 SVG shapes, so a full-page
+// scan can take several seconds on CI.
+describe('accessibility (axe)', { timeout: 30000 }, () => {
   it('home page', async () => {
     await renderAt('')
     expect(await violations()).toEqual([])
