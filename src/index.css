@@ -888,6 +888,10 @@ html.is-locked {
     height: 88vh;
     min-height: 540px;
   }
+  .stage-section + .stage-section {
+    height: 62vh;
+    min-height: 440px;
+  }
   .window {
     left: 0.75rem;
     top: 7.6rem;

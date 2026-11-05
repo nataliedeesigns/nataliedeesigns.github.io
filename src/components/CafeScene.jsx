@@ -15,17 +15,6 @@ const LAMP = [
   'kkkkkkkkkkkkkkkk',
   '......yyyy......',
 ]
-const SUN = [
-  '..kkkk..',
-  '.kyyyyk.',
-  'kykyykyk',
-  'kryyyyrk',
-  'kyykkyyk',
-  'kyyyyyyk',
-  '.kyyyyk.',
-  '..kkkk..',
-]
-const CLOUD = ['...kkk....', '.kkwwwkk..', 'kwwwwwwwk.', '.kkkkkkk..']
 const PLANT = [
   '....MM....',
   '..MMmmM...',
@@ -52,16 +41,7 @@ const CAT = [
   'kgggggggggggkk',
   '.kkkkkkkkkkkk.',
 ]
-const HEART = ['PP.PP', 'PPPPP', '.PPP.', '..P..']
-const JAR = (fill) => [
-  '.kkk.',
-  'kPPPk',
-  'kwwwk',
-  `k${fill}${fill}${fill}k`,
-  `k${fill}${fill}${fill}k`,
-  `k${fill}${fill}${fill}k`,
-  '.kkk.',
-]
+const HEART = ['.PP.PP.', 'PPPPPPP', 'PPPPPPP', '.PPPPP.', '..PPP..', '...P...']
 
 // Draws a sprite at scene position (x, y), merging same-color runs into one rect.
 export function Sprite({ x, y, rows, className }) {
@@ -128,18 +108,18 @@ function Computer({ onSelect, disabled }) {
       disabled={disabled}
     >
       <g className="lift">
-        <Box x={93} y={95} w={14} h={3} fill={PAL.c} outline />
-        <Box x={89} y={97} w={22} h={3} fill={PAL.c} outline />
-        <Box x={83} y={74} w={34} h={22} fill={PAL.c} outline />
-        <Box x={85} y={76} w={30} h={18} fill={PAL.m} outline />
+        <Box x={92} y={93} w={16} h={4} fill={PAL.c} outline />
+        <Box x={84} y={96} w={32} h={4} fill={PAL.c} outline />
+        <Box x={74} y={61} w={52} h={33} fill={PAL.c} outline />
+        <Box x={76} y={63} w={48} h={27} fill={PAL.m} outline />
         {[0, 1, 2].map((i) => (
-          <Box key={i} x={87} y={78 + i * 4} w={3} h={3} fill={[PAL.w, PAL.y, PAL.p][i]} outline />
+          <Box key={i} x={79} y={66 + i * 6} w={4} h={4} fill={[PAL.w, PAL.y, PAL.p][i]} outline />
         ))}
-        <Box x={95} y={79} w={17} h={11} fill={PAL.w} outline />
-        <Box x={95} y={79} w={17} h={3} fill={PAL.P} outline />
-        <Sprite x={c(101)} y={c(83)} rows={HEART} />
-        <Sprite x={c(98)} y={c(94)} rows={['PP.PP'].map((r) => r.replace(/P/g, 'r'))} />
-        <rect className="ring" x={c(83) - 6} y={c(74) - 6} width={c(34) + 12} height={c(26) + 12} />
+        <Box x={89} y={67} w={31} h={19} fill={PAL.w} outline />
+        <Box x={89} y={67} w={31} h={4} fill={PAL.P} outline />
+        <Sprite x={c(101)} y={c(74)} rows={HEART} />
+        <Sprite x={c(98)} y={c(91)} rows={['rr.rr']} />
+        <rect className="ring" x={c(74) - 6} y={c(61) - 6} width={c(52) + 12} height={c(39) + 12} />
       </g>
     </Hotspot>
   )
@@ -184,42 +164,6 @@ export default function CafeScene({ onSelect, disabled }) {
         </g>
       ))}
 
-      {/* Window with curtains */}
-      <g>
-        <Box x={162} y={18} w={32} h={54} fill={PAL.w} outline />
-        <Box x={164} y={20} w={28} h={50} fill={PAL.c} outline />
-        <Box x={165} y={30} w={26} h={10} fill={PAL.p} />
-        <Box x={165} y={40} w={26} h={12} fill={PAL.y} />
-        <Box x={165} y={52} w={26} h={17} fill={PAL.o} />
-        <Sprite x={c(167)} y={c(24)} rows={CLOUD} />
-        <Sprite x={c(180)} y={c(33)} rows={CLOUD} />
-        <Sprite x={c(168)} y={c(55)} rows={SUN} />
-        <Box x={177} y={21} w={2} h={48} fill={PAL.w} />
-        <Box x={165} y={44} w={26} h={2} fill={PAL.w} />
-        <Box x={156} y={15} w={44} h={2} fill={PAL.L} outline />
-        <Box x={158} y={16} w={6} h={44} fill={PAL.p} outline />
-        <Box x={192} y={16} w={6} h={44} fill={PAL.p} outline />
-        <Box x={160} y={71} w={36} h={3} fill={PAL.l} outline />
-        <Sprite x={c(183)} y={c(59)} rows={PLANT} />
-      </g>
-
-      {/* Shelf with jars and a plant */}
-      <g>
-        <Box x={8} y={46} w={32} h={2} fill={PAL.l} outline />
-        <Box x={11} y={48} w={1} h={3} fill={PAL.k} />
-        <Box x={36} y={48} w={1} h={3} fill={PAL.k} />
-        <Sprite x={c(11)} y={c(39)} rows={JAR('L')} />
-        <Sprite x={c(17)} y={c(39)} rows={JAR('y')} />
-        <Sprite x={c(28)} y={c(34)} rows={PLANT} />
-        {[
-          [29, 48, 4],
-          [32, 48, 7],
-          [35, 48, 3],
-        ].map(([x, y, h]) => (
-          <Box key={x} x={x} y={y} w={1} h={h} fill={PAL.M} />
-        ))}
-      </g>
-
       {/* Wainscoting */}
       <Box x={-200} y={93} w={600} h={44} fill="#a5a58d" />
       <Box x={-200} y={93} w={600} h={3} fill="#6b705c" />
@@ -244,36 +188,35 @@ export default function CafeScene({ onSelect, disabled }) {
       {/* Pendant lamps */}
       {[62, 142].map((x) => (
         <g key={x}>
-          <Box x={x} y={-120} w={1} h={132} fill={PAL.k} />
-          <Sprite x={c(x - 7)} y={c(12)} rows={LAMP} />
+          <Box x={x} y={-120} w={1} h={162} fill={PAL.k} />
+          <Sprite x={c(x - 7)} y={c(42)} rows={LAMP} />
         </g>
       ))}
 
       {/* Desk */}
       <g>
-        <Box x={50} y={111} w={5} h={26} fill={PAL.L} outline />
-        <Box x={145} y={111} w={5} h={26} fill={PAL.L} outline />
-        <Box x={47} y={104} w={106} h={8} fill={PAL.l} outline />
-        <Box x={88} y={105} w={24} h={6} fill={PAL.c} outline />
-        <Sprite x={c(98)} y={c(107)} rows={['P.P', '.P.']} />
-        <Box x={44} y={100} w={112} h={5} fill={PAL.l} outline />
-        <Box x={45} y={103} w={110} h={1} fill={PAL.L} />
+        <Box x={20} y={111} w={6} h={26} fill={PAL.L} outline />
+        <Box x={174} y={111} w={6} h={26} fill={PAL.L} outline />
+        <Box x={16} y={104} w={168} h={8} fill={PAL.l} outline />
+        {[30, 86, 142].map((x) => (
+          <g key={x}>
+            <Box x={x} y={105} w={28} h={6} fill={PAL.c} outline />
+            <Sprite x={c(x + 13)} y={c(107)} rows={['P.P', '.P.']} />
+          </g>
+        ))}
+        <Box x={12} y={100} w={176} h={5} fill={PAL.l} outline />
+        <Box x={13} y={103} w={174} h={1} fill={PAL.L} />
       </g>
 
       {/* Desk things */}
-      <Sprite x={c(52)} y={c(88)} rows={PLANT} />
-      <Sprite x={c(68)} y={c(91)} rows={STEAM} className="steam" />
-      <Sprite x={c(68)} y={c(94)} rows={MUG} />
+      <Sprite x={c(40)} y={c(88)} rows={PLANT} />
+      <Sprite x={c(56)} y={c(91)} rows={STEAM} className="steam" />
+      <Sprite x={c(56)} y={c(94)} rows={MUG} />
 
       <Computer onSelect={onSelect} disabled={disabled} />
 
-      <g>
-        <Box x={120} y={96} w={16} h={4} fill={PAL.v} outline />
-        <Box x={121} y={92} w={14} h={4} fill={PAL.M} outline />
-        <Box x={119} y={88} w={15} h={4} fill={PAL.P} outline />
-      </g>
-      <Sprite x={c(138)} y={c(92)} rows={CAT} />
-      <text x={c(146)} y={c(89)} className="zzz">
+      <Sprite x={c(140)} y={c(92)} rows={CAT} />
+      <text x={c(148)} y={c(89)} className="zzz">
         z z
       </text>
     </>
