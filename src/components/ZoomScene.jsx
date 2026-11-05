@@ -18,7 +18,17 @@ const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 // focusable id a `camera` box plus a `panel` box (scene units) or 'full' for the whole view.
 // `children(aspect, disabled)` renders the SVG content. `onArrive(focus)` is called
 // whenever the camera finishes moving; without `renderPanel` no panel is shown.
-export default function ZoomScene({ label, layout, focus, onFocus, onArrive, renderPanel, panelClass, hint, children }) {
+export default function ZoomScene({
+  label,
+  layout,
+  focus,
+  onFocus,
+  onArrive,
+  renderPanel,
+  panelClass,
+  hint,
+  children,
+}) {
   const wrapRef = useRef(null)
   const [size, setSize] = useState({ w: 0, h: 0 })
   const [view, setView] = useState({ x: 0, y: 0, w: 1200, h: 900 })
@@ -71,7 +81,8 @@ export default function ZoomScene({ label, layout, focus, onFocus, onArrive, ren
     // Animate when the focus changes. A resize mid-flight finishes the flight in the time
     // left; otherwise resizes and the first paint jump straight there.
     const remaining = Math.max(0, flightEndRef.current - performance.now())
-    const duration = firstRef.current || reduced ? 0 : lastFocusRef.current === focus ? remaining : ZOOM_MS
+    const duration =
+      firstRef.current || reduced ? 0 : lastFocusRef.current === focus ? remaining : ZOOM_MS
     flightEndRef.current = performance.now() + duration
     firstRef.current = false
     lastFocusRef.current = focus

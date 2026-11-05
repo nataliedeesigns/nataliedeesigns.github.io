@@ -109,7 +109,16 @@ const LAMP = [
   'kkkkkkkkkkkkkkkk',
   '......yyyy......',
 ]
-const SUN = ['..kkkk..', '.kyyyyk.', 'kykyykyk', 'kryyyyrk', 'kyykkyyk', 'kyyyyyyk', '.kyyyyk.', '..kkkk..']
+const SUN = [
+  '..kkkk..',
+  '.kyyyyk.',
+  'kykyykyk',
+  'kryyyyrk',
+  'kyykkyyk',
+  'kyyyyyyk',
+  '.kyyyyk.',
+  '..kkkk..',
+]
 const CLOUD = ['...kkk....', '.kkwwwkk..', 'kwwwwwwwk.', '.kkkkkkk..']
 const PLANT = [
   '....MM....',
@@ -126,14 +135,7 @@ const PLANT = [
   '..kkkkkk..',
 ]
 const STEAM = ['...w..w...', '..w..w....']
-const MUG = [
-  'kkkkkkkk..',
-  'kcccccckk.',
-  'kckcckck.k',
-  'krckkcrk.k',
-  'kcccccckk.',
-  '.kkkkkk...',
-]
+const MUG = ['kkkkkkkk..', 'kcccccckk.', 'kckcckck.k', 'krckkcrk.k', 'kcccccckk.', '.kkkkkk...']
 const CAT = [
   '.k....k.......',
   'kgk..kgk......',
@@ -145,7 +147,15 @@ const CAT = [
   '.kkkkkkkkkkkk.',
 ]
 const HEART = ['PP.PP', 'PPPPP', '.PPP.', '..P..']
-const JAR = (fill) => ['.kkk.', 'kPPPk', 'kwwwk', `k${fill}${fill}${fill}k`, `k${fill}${fill}${fill}k`, `k${fill}${fill}${fill}k`, '.kkk.']
+const JAR = (fill) => [
+  '.kkk.',
+  'kPPPk',
+  'kwwwk',
+  `k${fill}${fill}${fill}k`,
+  `k${fill}${fill}${fill}k`,
+  `k${fill}${fill}${fill}k`,
+  '.kkk.',
+]
 
 // Draws a sprite at scene position (x, y), merging same-color runs into one rect.
 export function Sprite({ x, y, rows, className }) {
@@ -156,7 +166,16 @@ export function Sprite({ x, y, rows, className }) {
       let k = i
       while (k < row.length && row[k] === row[i]) k++
       if (row[i] !== '.') {
-        rects.push(<rect key={`${i}-${j}`} x={x + c(i)} y={y + c(j)} width={c(k - i)} height={P} fill={PAL[row[i]]} />)
+        rects.push(
+          <rect
+            key={`${i}-${j}`}
+            x={x + c(i)}
+            y={y + c(j)}
+            width={c(k - i)}
+            height={P}
+            fill={PAL[row[i]]}
+          />,
+        )
       }
       i = k
     }
@@ -197,7 +216,11 @@ export function Hotspot({ label, onActivate, disabled, children }) {
 
 function Computer({ onSelect, disabled }) {
   return (
-    <Hotspot label="Look at the computer: resume and engineering projects" onActivate={() => onSelect('computer')} disabled={disabled}>
+    <Hotspot
+      label="Look at the computer: resume and engineering projects"
+      onActivate={() => onSelect('computer')}
+      disabled={disabled}
+    >
       <g className="lift">
         <Box x={93} y={95} w={14} h={3} fill={PAL.c} outline />
         <Box x={89} y={97} w={22} h={3} fill={PAL.c} outline />
@@ -246,7 +269,9 @@ export default function CafeScene({ onSelect, disabled }) {
       <rect x={c(-200)} y={c(-120)} width={c(600)} height={c(214)} fill="url(#dots)" />
 
       {/* String lights */}
-      {wire.map(({ x, y }) => <rect key={x} x={c(x)} y={c(y)} width={P} height={P} fill={PAL.k} />)}
+      {wire.map(({ x, y }) => (
+        <rect key={x} x={c(x)} y={c(y)} width={P} height={P} fill={PAL.k} />
+      ))}
       {bulbs.map(({ x, y }, i) => (
         <g key={x} className="twinkle" style={{ animationDelay: `${(i % 4) * 0.5}s` }}>
           <Box x={x} y={y + 1} w={2} h={2} fill={[PAL.y, PAL.w, PAL.y, PAL.p][i % 4]} />
@@ -280,19 +305,30 @@ export default function CafeScene({ onSelect, disabled }) {
         <Sprite x={c(11)} y={c(39)} rows={JAR('L')} />
         <Sprite x={c(17)} y={c(39)} rows={JAR('y')} />
         <Sprite x={c(28)} y={c(34)} rows={PLANT} />
-        {[[29, 48, 4], [32, 48, 7], [35, 48, 3]].map(([x, y, h]) => (
+        {[
+          [29, 48, 4],
+          [32, 48, 7],
+          [35, 48, 3],
+        ].map(([x, y, h]) => (
           <Box key={x} x={x} y={y} w={1} h={h} fill={PAL.M} />
         ))}
       </g>
-
-
 
       {/* Wainscoting */}
       <Box x={-200} y={93} w={600} h={44} fill="#a5a58d" />
       <Box x={-200} y={93} w={600} h={3} fill="#6b705c" />
       <Box x={-200} y={93} w={600} h={1} fill={PAL.k} />
       {panels.map((x) => (
-        <rect key={x} x={c(x + 2) + 3} y={c(98) + 3} width={c(16) - 6} height={c(35) - 6} fill="none" stroke="#6b705c" strokeWidth={P} />
+        <rect
+          key={x}
+          x={c(x + 2) + 3}
+          y={c(98) + 3}
+          width={c(16) - 6}
+          height={c(35) - 6}
+          fill="none"
+          stroke="#6b705c"
+          strokeWidth={P}
+        />
       ))}
 
       {/* Floor */}
@@ -331,7 +367,9 @@ export default function CafeScene({ onSelect, disabled }) {
         <Box x={119} y={88} w={15} h={4} fill={PAL.P} outline />
       </g>
       <Sprite x={c(138)} y={c(92)} rows={CAT} />
-      <text x={c(146)} y={c(89)} className="zzz">z z</text>
+      <text x={c(146)} y={c(89)} className="zzz">
+        z z
+      </text>
     </>
   )
 }

@@ -2,8 +2,22 @@ import { ART, PAL, Sprite, Hotspot } from './CafeScene'
 
 const NOTE_COLORS = ['#fffdf7', '#ffe8d6', '#f5e6ca', '#ffd6a5']
 const TILTS = [-2.5, 2, -1.5, 2.5, -2, 1.5]
-const NUDGE = [[-10, 6], [12, -8], [8, 10], [-12, -4], [6, -10], [-6, 8]]
-const pin = (fill) => ['.kkk.', 'k' + fill + 'w' + fill + 'k', 'k' + fill.repeat(3) + 'k', '.kkk.', '..k..', '..k..']
+const NUDGE = [
+  [-10, 6],
+  [12, -8],
+  [8, 10],
+  [-12, -4],
+  [6, -10],
+  [-6, 8],
+]
+const pin = (fill) => [
+  '.kkk.',
+  'k' + fill + 'w' + fill + 'k',
+  'k' + fill.repeat(3) + 'k',
+  '.kkk.',
+  '..k..',
+  '..k..',
+]
 const PIN_KEYS = ['P', 'M', 'L', 'G']
 
 // Where the board and each note go. Wide screens get a landscape board,
@@ -37,8 +51,18 @@ function Thumbnail({ study, x, y, w, h, clipId }) {
   if (study.cover) {
     return (
       <>
-        <clipPath id={clipId}><rect x={x} y={y} width={w} height={h} /></clipPath>
-        <image href={study.cover} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid slice" clipPath={`url(#${clipId})`} />
+        <clipPath id={clipId}>
+          <rect x={x} y={y} width={w} height={h} />
+        </clipPath>
+        <image
+          href={study.cover}
+          x={x}
+          y={y}
+          width={w}
+          height={h}
+          preserveAspectRatio="xMidYMid slice"
+          clipPath={`url(#${clipId})`}
+        />
       </>
     )
   }
@@ -47,7 +71,9 @@ function Thumbnail({ study, x, y, w, h, clipId }) {
   return (
     <>
       <rect x={x} y={y} width={w} height={h} fill={art.bg} />
-      <g transform={`translate(${x + (w - 72 * scale) / 2} ${y + (h - 72 * scale) / 2}) scale(${scale})`}>
+      <g
+        transform={`translate(${x + (w - 72 * scale) / 2} ${y + (h - 72 * scale) / 2}) scale(${scale})`}
+      >
         <Sprite x={0} y={0} rows={art.rows} />
       </g>
     </>
@@ -63,19 +89,67 @@ function Note({ study, box, index, onSelect, disabled, narrow }) {
   const textY = y + pad + thumbH
   const cx = x + w / 2
   return (
-    <Hotspot label={`Open case study: ${study.title}`} onActivate={() => onSelect(study.id)} disabled={disabled}>
+    <Hotspot
+      label={`Open case study: ${study.title}`}
+      onActivate={() => onSelect(study.id)}
+      disabled={disabled}
+    >
       <g className="lift">
         <g transform={`rotate(${tilt} ${cx} ${y + h / 2})`} shapeRendering="geometricPrecision">
           <rect x={x + 8} y={y + 10} width={w} height={h} fill="#00000026" />
-          <rect x={x} y={y} width={w} height={h} fill={NOTE_COLORS[index % NOTE_COLORS.length]} stroke={PAL.k} strokeWidth="5" />
-          <Thumbnail study={study} x={x + pad} y={y + pad} w={w - pad * 2} h={thumbH} clipId={`thumb-${study.id}`} />
-          <rect x={x + pad} y={y + pad} width={w - pad * 2} height={thumbH} fill="none" stroke={PAL.k} strokeWidth="3" />
-          <text x={x + pad} y={textY + title * 1.5} className="note-title" fontSize={title}>{study.title}</text>
-          <text x={x + pad} y={textY + title * 1.5 + title * 0.95} className="note-sub" fontSize={title * 0.62}>{study.subtitle}</text>
-          <text x={x + w - pad} y={y + h - pad} textAnchor="end" className="note-cta" fontSize={title * 0.6}>Read case study →</text>
+          <rect
+            x={x}
+            y={y}
+            width={w}
+            height={h}
+            fill={NOTE_COLORS[index % NOTE_COLORS.length]}
+            stroke={PAL.k}
+            strokeWidth="5"
+          />
+          <Thumbnail
+            study={study}
+            x={x + pad}
+            y={y + pad}
+            w={w - pad * 2}
+            h={thumbH}
+            clipId={`thumb-${study.id}`}
+          />
+          <rect
+            x={x + pad}
+            y={y + pad}
+            width={w - pad * 2}
+            height={thumbH}
+            fill="none"
+            stroke={PAL.k}
+            strokeWidth="3"
+          />
+          <text x={x + pad} y={textY + title * 1.5} className="note-title" fontSize={title}>
+            {study.title}
+          </text>
+          <text
+            x={x + pad}
+            y={textY + title * 1.5 + title * 0.95}
+            className="note-sub"
+            fontSize={title * 0.62}
+          >
+            {study.subtitle}
+          </text>
+          <text
+            x={x + w - pad}
+            y={y + h - pad}
+            textAnchor="end"
+            className="note-cta"
+            fontSize={title * 0.6}
+          >
+            Read case study →
+          </text>
           <rect className="ring" x={x - 10} y={y - 10} width={w + 20} height={h + 20} />
         </g>
-        <Sprite x={Math.round(cx / 6) * 6 - 15} y={Math.round(y / 6) * 6 - 24} rows={pin(PIN_KEYS[index % PIN_KEYS.length])} />
+        <Sprite
+          x={Math.round(cx / 6) * 6 - 15}
+          y={Math.round(y / 6) * 6 - 24}
+          rows={pin(PIN_KEYS[index % PIN_KEYS.length])}
+        />
       </g>
     </Hotspot>
   )
@@ -112,7 +186,15 @@ export default function Corkboard({ caseStudies, layout, onSelect, disabled }) {
       <rect x={30} y={30} width={W - 60} height={H - 60} fill="url(#cork)" />
 
       {caseStudies.map((study, i) => (
-        <Note key={study.id} study={study} box={notes[i]} index={i} onSelect={onSelect} disabled={disabled} narrow={narrow} />
+        <Note
+          key={study.id}
+          study={study}
+          box={notes[i]}
+          index={i}
+          onSelect={onSelect}
+          disabled={disabled}
+          narrow={narrow}
+        />
       ))}
     </>
   )
