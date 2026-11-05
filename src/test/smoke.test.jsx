@@ -90,11 +90,20 @@ describe('case study links on the home page resolve', () => {
   })
 
   it('every file a case study points to exists in public/', () => {
+    // An image is a path or { src, srcSet, sources: [{ srcSet }] }; srcSet lists "path 800w" pairs.
+    const imagePaths = (image) =>
+      typeof image === 'string'
+        ? [image]
+        : [image?.src, image?.srcSet, ...(image?.sources ?? []).map((s) => s.srcSet)]
+            .filter(Boolean)
+            .flatMap((set) => set.split(',').map((entry) => entry.trim().split(/\s+/)[0]))
     const paths = caseStudies.flatMap((s) => [
-      s.cover,
+      ...imagePaths(s.cover),
       s.prototype?.video,
       s.prototype?.poster,
-      ...s.sections.flatMap((sec) => (sec.media ?? []).flatMap((m) => [m.src, m.video, m.poster])),
+      ...s.sections.flatMap((sec) =>
+        (sec.media ?? []).flatMap((m) => [...imagePaths(m), m.video, m.poster]),
+      ),
     ])
     for (const path of paths.filter((p) => typeof p === 'string' && p.startsWith('/'))) {
       expect(existsSync(fileURLToPath(new URL(`../../public${path}`, import.meta.url))), path).toBe(

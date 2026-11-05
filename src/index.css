@@ -14,8 +14,7 @@
   --accent: #6f4e37;
   --line: #dcc7aa;
   --pixel: 'Pixelify Sans', monospace;
-  --round: 'Nunito', system-ui, sans-serif;
-  --normal: 'Georgia';
+  --normal: Georgia, serif;
   --sidebar: clamp(300px, 30vw, 400px);
   /* A chunky stepped outline that looks drawn on the pixel grid. */
   --px: 4px;
@@ -53,6 +52,11 @@ h4 {
   font-family: var(--normal);
   font-weight: 600;
   color: var(--ink);
+}
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
 :focus-visible {
   outline: 3px solid var(--caramel);
@@ -408,10 +412,6 @@ html.is-locked {
 }
 
 /* Case study, shown inside the frame */
-.panel-paper {
-  background: var(--paper);
-  box-shadow: var(--pixel-border);
-}
 .case-study {
   height: 100%;
   overflow-y: auto;

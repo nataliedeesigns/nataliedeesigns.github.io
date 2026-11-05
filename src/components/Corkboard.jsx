@@ -20,7 +20,7 @@ function Thumbnail({ study, x, y, w, h, clipId }) {
           <rect x={x} y={y} width={w} height={h} />
         </clipPath>
         <image
-          href={study.cover}
+          href={typeof study.cover === 'string' ? study.cover : study.cover.src}
           x={x}
           y={y}
           width={w}
