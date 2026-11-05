@@ -51,3 +51,41 @@ export default function Sidebar({ profile, caseStudies, onFocus, focus }) {
     </aside>
   )
 }
+
+// The sidebar while reading a case study: its headings, with the one in view highlighted.
+export function CaseSidebar({ profile, study, outline, active, onJump }) {
+  return (
+    <aside className="sidebar case-sidebar">
+      <div className="sidebar-inner">
+        <a className="mini-profile" href="#/">
+          <span className="nav-title">{profile.name}</span>
+          <span className="nav-sub">{profile.role}</span>
+        </a>
+        <a className="back-link" href="#/">← All case studies</a>
+
+        <p className="case-eyebrow">{study.subtitle}</p>
+        <p className="case-title">{study.title}</p>
+
+        <nav className="side-nav toc" aria-label="On this page">
+          <h2>On this page</h2>
+          <ol>
+            {outline.map((item, i) => (
+              <li key={item.id}>
+                <button className={active === item.id ? 'active' : ''} onClick={() => onJump(item.id)} aria-current={active === item.id ? 'location' : undefined}>
+                  <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="nav-title">{item.label}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        <div className="side-links">
+          <a href={`mailto:${profile.email}`}>Email</a>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href={profile.github} target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </aside>
+  )
+}

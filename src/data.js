@@ -20,74 +20,106 @@ export const profile = {
   resumePdf: '/resume.pdf',
 }
 
-// The four framed pictures above the desk. Order = left to right.
-// `art` picks the pixel picture inside the frame: 'coffee', 'cat', 'strawberry' or 'cloud'.
+// Case studies, shown as notes pinned to the corkboard. Order = reading order.
+//
+// Put each case study's files in public/case-studies/<id>/ and refer to them as
+// '/case-studies/<id>/<file>'. Anything left as null shows a labelled placeholder,
+// so you can see where it goes.
+//
+//   cover      Image on the note (and at the top of the case study).
+//              Without one, the note shows the pixel `art`: 'coffee', 'cat', 'strawberry' or 'cloud'.
+//   prototype  A screen recording of the prototype in use.
+//              device: 'phone' or 'desktop' picks the frame around the video.
+//              link: a live prototype (e.g. a Figma prototype share link), shown as a button.
+//   sections   The story. `body` is a paragraph or a list of paragraphs.
+//              `media` is a list of images or videos: { src, alt, caption } or { video, poster, caption }.
+const placeholderSections = [
+  {
+    heading: 'The problem',
+    body: 'Describe the problem, who it affected, and why it mattered.',
+  },
+  {
+    heading: 'Research',
+    body: 'What you learned from users, data, and competitors.',
+    media: [{ src: null, alt: 'Research synthesis', caption: 'Affinity map or key insights' }],
+  },
+  {
+    heading: 'Design',
+    body: [
+      'How you explored ideas and narrowed down to a solution.',
+      'Call out the decisions you are proudest of.',
+    ],
+    media: [
+      { src: null, alt: 'Wireframes', caption: 'Early wireframes' },
+      { src: null, alt: 'Final screens', caption: 'Final designs' },
+    ],
+  },
+  {
+    heading: 'Outcome',
+    body: 'Results, metrics, and what you would do next.',
+  },
+]
+
 export const caseStudies = [
   {
     id: 'case-1',
     title: 'Case Study One',
     subtitle: 'Mobile app · Product design',
     art: 'coffee',
+    cover: null,
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'Lead UX/UI Designer'],
       ['Timeline', '12 weeks'],
       ['Tools', 'Figma, FigJam, Maze'],
     ],
-    sections: [
-      { heading: 'The problem', body: 'Describe the problem and who it affected.' },
-      { heading: 'Research', body: 'What you learned from users, data, and competitors.' },
-      { heading: 'Design', body: 'How you explored and narrowed down solutions.' },
-      { heading: 'Outcome', body: 'Results, metrics, and what you would do next.' },
-    ],
+    prototype: { device: 'phone', video: null, poster: null, link: null },
+    sections: placeholderSections,
   },
   {
     id: 'case-2',
     title: 'Case Study Two',
     subtitle: 'Web platform · UX research',
     art: 'cat',
+    cover: null,
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'UX Designer'],
       ['Timeline', '8 weeks'],
       ['Tools', 'Figma'],
     ],
-    sections: [
-      { heading: 'The problem', body: 'Coming soon.' },
-      { heading: 'Outcome', body: 'Coming soon.' },
-    ],
+    prototype: { device: 'desktop', video: null, poster: null, link: null },
+    sections: placeholderSections,
   },
   {
     id: 'case-3',
     title: 'Case Study Three',
     subtitle: 'Design system',
     art: 'strawberry',
+    cover: null,
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'UI Designer'],
       ['Timeline', '6 weeks'],
       ['Tools', 'Figma, Storybook'],
     ],
-    sections: [
-      { heading: 'The problem', body: 'Coming soon.' },
-      { heading: 'Outcome', body: 'Coming soon.' },
-    ],
+    prototype: { device: 'desktop', video: null, poster: null, link: null },
+    sections: placeholderSections,
   },
   {
     id: 'case-4',
     title: 'Case Study Four',
     subtitle: 'Responsive website · Branding',
     art: 'cloud',
+    cover: null,
     summary: 'One-sentence summary of the project and the outcome.',
     meta: [
       ['Role', 'UX/UI Designer'],
       ['Timeline', '4 weeks'],
       ['Tools', 'Figma, Illustrator'],
     ],
-    sections: [
-      { heading: 'The problem', body: 'Coming soon.' },
-      { heading: 'Outcome', body: 'Coming soon.' },
-    ],
+    prototype: { device: 'phone', video: null, poster: null, link: null },
+    sections: placeholderSections,
   },
 ]
 

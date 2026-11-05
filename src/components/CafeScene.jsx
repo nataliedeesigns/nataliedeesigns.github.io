@@ -4,20 +4,13 @@
 //
 // Sprites are drawn as strings: each character is a color from PAL, '.' is empty.
 
-const P = 6
-const c = (n) => n * P
-
-export const FRAMES = [
-  { x: c(50), y: c(34), w: c(22), h: c(27) },
-  { x: c(76), y: c(27), w: c(25), h: c(33) },
-  { x: c(105), y: c(31), w: c(26), h: c(21) },
-  { x: c(135), y: c(33), w: c(20), h: c(24) },
-]
+export const P = 6
+export const c = (n) => n * P
 
 export const MONITOR = { x: c(83), y: c(74), w: c(34), h: c(26) }
 export const SCREEN = { x: c(86), y: c(77), w: c(28), h: c(16) }
 
-const PAL = {
+export const PAL = {
   k: '#4b3832', // outline
   w: '#fffdf7',
   c: '#f5e6ca',
@@ -36,7 +29,7 @@ const PAL = {
   G: '#6b705c',
 }
 
-const ART = {
+export const ART = {
   coffee: {
     bg: PAL.p,
     rows: [
@@ -107,7 +100,6 @@ const ART = {
   },
 }
 
-const BOW = ['kk...kk', 'kpkkkpk', 'kpkPkpk', 'kpkkkpk', 'kk...kk']
 const LAMP = [
   '.......kk.......',
   '.....kkmmkk.....',
@@ -156,7 +148,7 @@ const HEART = ['PP.PP', 'PPPPP', '.PPP.', '..P..']
 const JAR = (fill) => ['.kkk.', 'kPPPk', 'kwwwk', `k${fill}${fill}${fill}k`, `k${fill}${fill}${fill}k`, `k${fill}${fill}${fill}k`, '.kkk.']
 
 // Draws a sprite at scene position (x, y), merging same-color runs into one rect.
-function Sprite({ x, y, rows, className }) {
+export function Sprite({ x, y, rows, className }) {
   const rects = []
   rows.forEach((row, j) => {
     let i = 0
@@ -173,7 +165,7 @@ function Sprite({ x, y, rows, className }) {
 }
 
 // A rectangle in cell units, optionally with a one-pixel outline.
-function Box({ x, y, w, h, fill, outline }) {
+export function Box({ x, y, w, h, fill, outline }) {
   if (!outline) return <rect x={c(x)} y={c(y)} width={c(w)} height={c(h)} fill={fill} />
   return (
     <>
@@ -183,7 +175,7 @@ function Box({ x, y, w, h, fill, outline }) {
   )
 }
 
-function Hotspot({ label, onActivate, disabled, children }) {
+export function Hotspot({ label, onActivate, disabled, children }) {
   return (
     <g
       className="hotspot"
@@ -200,30 +192,6 @@ function Hotspot({ label, onActivate, disabled, children }) {
     >
       {children}
     </g>
-  )
-}
-
-const FRAME_COLORS = [PAL.L, PAL.l, PAL.M, PAL.o]
-
-function Frame({ box, study, index, onSelect, disabled }) {
-  const x = box.x / P
-  const y = box.y / P
-  const w = box.w / P
-  const h = box.h / P
-  const art = ART[study.art] ?? ART.coffee
-  const plaqueW = w
-  return (
-    <Hotspot label={`Open case study: ${study.title}`} onActivate={() => onSelect(study.id)} disabled={disabled}>
-      <g className="lift">
-        <Box x={x + 1} y={y + 1} w={w} h={h} fill="#00000022" />
-        <Box x={x} y={y} w={w} h={h} fill={FRAME_COLORS[index % 4]} outline />
-        <Box x={x + 3} y={y + 3} w={w - 6} h={h - 6} fill={art.bg} outline />
-        <Sprite x={c(x + Math.floor((w - 12) / 2))} y={c(y + Math.floor((h - 12) / 2))} rows={art.rows} />
-        <rect className="ring" x={c(x) - 6} y={c(y - 3) - 6} width={c(w) + 12} height={c(h + 3) + 12} />
-      </g>
-      <Box x={x + Math.floor((w - plaqueW) / 2)} y={y + h + 1} w={plaqueW} h={4} fill={PAL.w} outline />
-      <text x={c(x) + c(w) / 2} y={c(y + h + 3) + 4} textAnchor="middle" className="plaque">{study.title}</text>
-    </Hotspot>
   )
 }
 
@@ -248,7 +216,7 @@ function Computer({ onSelect, disabled }) {
   )
 }
 
-export default function CafeScene({ caseStudies, onSelect, disabled }) {
+export default function CafeScene({ onSelect, disabled }) {
   // String lights: the wire sags between hooks every 50 cells.
   const wire = []
   for (let x = -60; x < 260; x++) {
@@ -337,11 +305,6 @@ export default function CafeScene({ caseStudies, onSelect, disabled }) {
           <Box x={x} y={-120} w={1} h={132} fill={PAL.k} />
           <Sprite x={c(x - 7)} y={c(12)} rows={LAMP} />
         </g>
-      ))}
-
-      {/* Framed case studies */}
-      {caseStudies.slice(0, FRAMES.length).map((study, i) => (
-        <Frame key={study.id} box={FRAMES[i]} study={study} index={i} onSelect={onSelect} disabled={disabled} />
       ))}
 
       {/* Desk */}
