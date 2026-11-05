@@ -1,19 +1,7 @@
 // The case study page that opens when a note on the corkboard is clicked.
 // Its content comes from `caseStudies` in src/data.js.
 
-const slug = (text) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-
-// The headings shown in the sidebar while reading a case study.
-export function caseOutline(study) {
-  return [
-    { id: 'overview', label: 'Overview' },
-    ...study.sections.map((s) => ({ id: slug(s.heading), label: s.heading })),
-  ]
-}
+import { slug } from './caseOutline'
 
 function Placeholder({ label, hint, className = '' }) {
   return (
